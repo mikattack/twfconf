@@ -14,7 +14,7 @@
  * All values are coerced into strings to simplify option definition,
  * parsing, and output.
  */
-package main
+package twfconf
 
 import (
   "os"
