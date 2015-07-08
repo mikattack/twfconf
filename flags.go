@@ -57,8 +57,8 @@ func NewArgConf(usage string, description string) ArgConf {
 /* 
  * Add argument/environmental variable to the input configuration.
  */
-func (ac *ArgConf) NewArg(cli string, env string, initial interface{}, description string) {
-  value := initial.(string)
+func (ac *ArgConf) NewArg(cli string, env string, initial string, description string) {
+  value := initial
   ac.config[cli] = value
   ac.envs[env] = cli
   ac.desc[cli] = description
