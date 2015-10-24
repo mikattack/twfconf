@@ -1,7 +1,7 @@
 /* 
- * Library to allow applications to define their input configuration through
- * environmental variables, define defaults for them, and override those
- * settings via command-line parameters.
+ * Convenience library to allow applications to define their input
+ * configuration through environmental variables, define defaults for
+ * them, and override those settings via command-line parameters.
  * 
  * Configuration variables are referenced by their CLI name (by convention
  * lowercase alphanumeric with dashes or underscores).  Their value is
@@ -13,6 +13,10 @@
  * 
  * All values are coerced into strings to simplify option definition,
  * parsing, and output.
+ * 
+ * As this is a convenience library, it's targeted at a very common use case.
+ * If a program defines subcommands, consider using the Cobra library, which
+ * is far more flexible.
  */
 package twfconf
 
@@ -39,8 +43,8 @@ type ArgConf struct {
  */
 func NewArgConf(usage string, description string) ArgConf {
   cmd := cobra.Command{
-    Use:    "misato-provision-api",
-    Short:  "Cloud resource provisioning API",
+    Use:    usage,
+    Short:  description,
     Run:    func (cmd *cobra.Command, args []string) {
       // No operation, but necessary for Cobra to recognize a command
     },
@@ -90,6 +94,14 @@ func (ac *ArgConf) GetArgValues(args []string) map[string]string {
   for opt, ptr := range flags {
     if len(*ptr) > 0 {
       ac.config[opt] = *ptr
+    }
+  }
+
+  // Check if "help" was one of the arguments
+  ac.config["help"] = ""
+  for _, arg := range args {
+    if arg == "--help" || arg == "-h" {
+      ac.config["help"] = "help"
     }
   }
 
